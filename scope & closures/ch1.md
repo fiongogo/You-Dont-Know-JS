@@ -25,6 +25,9 @@ But, where and how do these *Scope* rules get set?
 1.1 编译原理
 
 It may be self-evident, or it may be surprising, depending on your level of interaction with various languages, but despite the fact that JavaScript falls under the general category of "dynamic" or "interpreted" languages, it is in fact a compiled language. It is *not* compiled well in advance, as are many traditionally-compiled languages, nor are the results of compilation portable among various distributed systems.
+尽管通常将JavaScript归类为“动态”或“解释执行”语言，但事实上它是一门编译语言。这个事实对
+你来说可能显而易见，也可能你闻所未闻，取决于你接触过多少编程语言，具有多少经验。但与传
+统的编译语言不同，它不是提前编译的，编译结果也不能在分布式系统中进行移植。
 
 But, nevertheless, the JavaScript engine performs many of the same steps, albeit in more sophisticated ways than we may commonly be aware, of any traditional language-compiler.
 
