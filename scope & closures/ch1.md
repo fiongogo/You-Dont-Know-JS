@@ -1,5 +1,6 @@
 # You Don't Know JS: Scope & Closures
 # Chapter 1: What is Scope?
+第 1 章 作用域是什么
 
 One of the most fundamental paradigms of nearly all programming languages is the ability to store values in variables, and later retrieve or modify those values. In fact, the ability to store values and pull values out of variables is what gives a program *state*.
 
