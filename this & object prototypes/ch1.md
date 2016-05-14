@@ -262,20 +262,34 @@ However, the developer who writes such code is attempting to use `this` to creat
 
 Every time you feel yourself trying to mix lexical scope look-ups with `this`, remind yourself: *there is no bridge*.
 
-## What's `this`?
+## What's `this`? this到底是什么
 
 Having set aside various incorrect assumptions, let us now turn our attention to how the `this` mechanism really works.
 
+排除了一些错误理解之后，我们来看看this到底是一种什么样的机制。
+
 We said earlier that `this` is not an author-time binding but a runtime binding. It is contextual based on the conditions of the function's invocation. `this` binding has nothing to do with where a function is declared, but has instead everything to do with the manner in which the function is called.
+
+之前我们说过this是在运行时进行绑定的，并不是在编写时绑定，它的上下文取决于函数调用时的各种条件。this的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。
 
 When a function is invoked, an activation record, otherwise known as an execution context, is created. This record contains information about where the function was called from (the call-stack), *how* the function was invoked, what parameters were passed, etc. One of the properties of this record is the `this` reference which will be used for the duration of that function's execution.
 
+当一个函数被调用时，会创建一个活动记录（有时候也称为执行上下文）。这个记录会包含函数在哪里被调用（调用栈）、函数的调用方法、传入的参数等信息。this就是记录的其中一个属性，会在函数执行的过程中用到。
+
 In the next chapter, we will learn to find a function's **call-site** to determine how its execution will bind `this`.
+
+在下一章我们会学习如何寻找函数的调用位置，从而判断函数在执行过程中会如何绑定this。
 
 ## Review (TL;DR)
 
 `this` binding is a constant source of confusion for the JavaScript developer who does not take the time to learn how the mechanism actually works. Guesses, trial-and-error, and blind copy-n-paste from Stack Overflow answers is not an effective or proper way to leverage *this* important `this` mechanism.
 
+对于那些没有投入时间学习this机制的JavaScript开发者来说，this的绑定一直是一件非常令人困惑的事。this是非常重要的，但是猜测、尝试并出错和盲目地从Stack Overflow上复制和粘贴答案并不能让你真正理解this的机制。
+
 To learn `this`, you first have to learn what `this` is *not*, despite any assumptions or misconceptions that may lead you down those paths. `this` is neither a reference to the function itself, nor is it a reference to the function's *lexical* scope.
 
+学习this的第一步是明白this既不指向函数自身也不指向函数的词法作用域，你也许被这样的解释误导过，但其实它们都是错误的。
+
 `this` is actually a binding that is made when a function is invoked, and *what* it references is determined entirely by the call-site where the function is called.
+
+this实际上是在函数被调用时发生的绑定，它指向什么完全取决于函数在哪里被调用。
