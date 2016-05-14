@@ -91,19 +91,25 @@ For you to *fully understand* how JavaScript works, you need to begin to *think*
 为了能够完全理解JavaScript的工作原理，你需要开始像引擎（和它的朋友们）一样思考，从它们的
 角度提出问题，并从它们的角度回答这些问题。
 
-### Back & Forth
+### Back & Forth 对话
 
-When you see the program `var a = 2;`, you most likely think of that as one statement. But that's not how our new friend *Engine* sees it. In fact, *Engine* sees two distinct statements, one which *Compiler* will handle during compilation, and one which *Engine* will handle during execution.
+When you see the program `var a = 2;`, you most likely think of that as one statement. But that's not how our new friend *Engine* sees it. In fact, *Engine* sees two distinct statements, one which *Compiler* will handle during compilation, and one which *Engine* will handle during execution.当你看见var a = 2;这段程序时，很可能认为这是一句声明。但我们的新朋友引擎却不这么看。事
+实上，引擎认为这里有两个完全不同的声明，一个由编译器在编译时处理，另一个则由引擎在运行
+时处理。
 
-So, let's break down how *Engine* and friends will approach the program `var a = 2;`.
+So, let's break down how *Engine* and friends will approach the program `var a = 2;`.下面我们将var a = 2;分解，看看引擎和它的朋友们是如何协同工作的。
 
-The first thing *Compiler* will do with this program is perform lexing to break it down into tokens, which it will then parse into a tree. But when *Compiler* gets to code-generation, it will treat this program somewhat differently than perhaps assumed.
+The first thing *Compiler* will do with this program is perform lexing to break it down into tokens, which it will then parse into a tree. But when *Compiler* gets to code-generation, it will treat this program somewhat differently than perhaps assumed.编译器首先会将这段程序分解成词法单元，然后将词法单元解析成一个树结构。但是当编译器开
+始进行代码生成时，它对这段程序的处理方式会和预期的有所不同。
 
-A reasonable assumption would be that *Compiler* will produce code that could be summed up by this pseudo-code: "Allocate memory for a variable, label it `a`, then stick the value `2` into that variable." Unfortunately, that's not quite accurate.
+A reasonable assumption would be that *Compiler* will produce code that could be summed up by this pseudo-code: "Allocate memory for a variable, label it `a`, then stick the value `2` into that variable." Unfortunately, that's not quite accurate.可以合理地假设编译器所产生的代码能够用下面的伪代码进行概括：“为一个变量分配内存，将其
+命名为a，然后将值2保存进这个变量。”然而，这并不完全正确。
 
-*Compiler* will instead proceed as:
+*Compiler* will instead proceed as:事实上编译器会进行如下处理。
 
-1. Encountering `var a`, *Compiler* asks *Scope* to see if a variable `a` already exists for that particular scope collection. If so, *Compiler* ignores this declaration and moves on. Otherwise, *Compiler* asks *Scope* to declare a new variable called `a` for that scope collection.
+1. Encountering `var a`, *Compiler* asks *Scope* to see if a variable `a` already exists for that particular scope collection. If so, *Compiler* ignores this declaration and moves on. Otherwise, *Compiler* asks *Scope* to declare a new variable called `a` for that scope collection.1. 遇到var a，编译器会询问作用域是否已经有一个该名称的变量存在于同一个作用域的集合中。
+如果是，编译器会忽略该声明，继续进行编译；否则它会要求作用域在当前作用域的集合中声明一
+个新的变量，并命名为a。
 
 2. *Compiler* then produces code for *Engine* to later execute, to handle the `a = 2` assignment. The code *Engine* runs will first ask *Scope* if there is a variable called `a` accessible in the current scope collection. If so, *Engine* uses that variable. If not, *Engine* looks *elsewhere* (see nested *Scope* section below).
 
