@@ -3,7 +3,7 @@
 
 In Chapter 1, we discarded various misconceptions about `this` and learned instead that `this` is a binding made for each function invocation, based entirely on its **call-site** (how the function is called).
 
-在第1章中，我们排除了一些对于this的错误理解并且明白了每个函数的this是在调用时被绑定的，完全取决于函数的调用位置（也就是函数的调用方法）。
+在第1章中，我们排除了一些对于`this`的错误理解并且明白了每个函数的`this`是在调用时被绑定的，完全取决于**函数的调用位置**（也就是函数的调用方法）。
 
 ## Call-site 调用位置
 
