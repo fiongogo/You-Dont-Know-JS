@@ -25,15 +25,19 @@ But, where and how do these *Scope* rules get set?
 ## Compiler Theory 编译原理
 
 It may be self-evident, or it may be surprising, depending on your level of interaction with various languages, but despite the fact that JavaScript falls under the general category of "dynamic" or "interpreted" languages, it is in fact a compiled language. It is *not* compiled well in advance, as are many traditionally-compiled languages, nor are the results of compilation portable among various distributed systems.
+
 尽管通常将JavaScript归类为“动态”或“解释执行”语言，但事实上它是一门编译语言。这个事实对你来说可能显而易见，也可能你闻所未闻，取决于你接触过多少编程语言，具有多少经验。但与传统的编译语言不同，它不是提前编译的，编译结果也不能在分布式系统中进行移植。
 
 But, nevertheless, the JavaScript engine performs many of the same steps, albeit in more sophisticated ways than we may commonly be aware, of any traditional language-compiler.
+
 尽管如此，JavaScript引擎进行编译的步骤和传统的编译语言非常相似，在某些环节可能比预想的要复杂。
 
 In traditional compiled-language process, a chunk of source code, your program, will undergo typically three steps *before* it is executed, roughly called "compilation":
+
 在传统编译语言的流程中，程序中的一段源代码在执行之前会经历三个步骤，统称为“编译”。
 
 1. **Tokenizing/Lexing:** breaking up a string of characters into meaningful (to the language) chunks, called tokens. For instance, consider the program: `var a = 2;`. This program would likely be broken up into the following tokens: `var`, `a`, `=`, `2`, and `;`. Whitespace may or may not be persisted as a token, depending on whether it's meaningful or not.
+
 分词/词法分析（Tokenizing/Lexing）
 这个过程会将由字符组成的字符串分解成（对编程语言来说）有意义的代码块，这些代码块被
 称为词法单元（token）。例如，考虑程序var a = 2;。这段程序通常会被分解成为下面这些词法
@@ -43,57 +47,72 @@ In traditional compiled-language process, a chunk of source code, your program, 
     分词（tokenizing）和词法分析（Lexing）之间的区别是非常微妙、晦涩的，主要差异在于词法单元的识别是通过有状态还是无状态的方式进行的。简单来说，如果词法单元生成器在判断a是一个独立的词法单元还是其他词法单元的一部分时，调用的是有状态的解析规则，那么这个过程就被称为词法分析。
 
 2. **Parsing:** taking a stream (array) of tokens and turning it into a tree of nested elements, which collectively represent the grammatical structure of the program. This tree is called an "AST" (<b>A</b>bstract <b>S</b>yntax <b>T</b>ree).
+
 解析/语法分析（Parsing）这个过程是将词法单元流（数组）转换成一个由元素逐级嵌套所组成的代表了程序语法结构的
 树。这个树被称为“抽象语法树”（Abstract Syntax Tree，AST）。
 
-    The tree for `var a = 2;` might start with a top-level node called `VariableDeclaration`, with a child node called `Identifier` (whose value is `a`), and another child called `AssignmentExpression` which itself has a child called `NumericLiteral` (whose value is `2`).var a = 2;的抽象语法树中可能会有一个叫作VariableDeclaration的顶级节点，接下来是一个叫作Identifier（它的值是a）的子节点，以及一个叫作AssignmentExpression的子节点。AssignmentExpression节点有一个叫作NumericLiteral（它的值是2）的子节点。
+    The tree for `var a = 2;` might start with a top-level node called `VariableDeclaration`, with a child node called `Identifier` (whose value is `a`), and another child called `AssignmentExpression` which itself has a child called `NumericLiteral` (whose value is `2`).
+    var a = 2;的抽象语法树中可能会有一个叫作VariableDeclaration的顶级节点，接下来是一个叫作Identifier（它的值是a）的子节点，以及一个叫作AssignmentExpression的子节点。AssignmentExpression节点有一个叫作NumericLiteral（它的值是2）的子节点。
 
 3. **Code-Generation:** the process of taking an AST and turning it into executable code. This part varies greatly depending on the language, the platform it's targeting, etc.
+
 代码生成将AST转换为可执行代码的过程称被称为代码生成。这个过程与语言、目标平台等息息相关。
 
-    So, rather than get mired in details, we'll just handwave and say that there's a way to take our above described AST for `var a = 2;` and turn it into a set of machine instructions to actually *create* a variable called `a` (including reserving memory, etc.), and then store a value into `a`.抛开具体细节，简单来说就是有某种方法可以将var a = 2;的AST转化为一组机器指令，用来创建一个叫作a的变量（包括分配内存等），并将一个值储存在a中。
+    So, rather than get mired in details, we'll just handwave and say that there's a way to take our above described AST for `var a = 2;` and turn it into a set of machine instructions to actually *create* a variable called `a` (including reserving memory, etc.), and then store a value into `a`.
+    抛开具体细节，简单来说就是有某种方法可以将var a = 2;的AST转化为一组机器指令，用来创建一个叫作a的变量（包括分配内存等），并将一个值储存在a中。
 
     **Note:** The details of how the engine manages system resources are deeper than we will dig, so we'll just take it for granted that the engine is able to create and store variables as needed.
     关于引擎如何管理系统资源超出了我们的讨论范围，因此只需要简单地了解引擎可以根据需要创建并储存变量即可。
 
-The JavaScript engine is vastly more complex than *just* those three steps, as are most other language compilers. For instance, in the process of parsing and code-generation, there are certainly steps to optimize the performance of the execution, including collapsing redundant elements, etc.比起那些编译过程只有三个步骤的语言的编译器，JavaScript引擎要复杂得多。例如，在语法分析
+The JavaScript engine is vastly more complex than *just* those three steps, as are most other language compilers. For instance, in the process of parsing and code-generation, there are certainly steps to optimize the performance of the execution, including collapsing redundant elements, etc.
+
+比起那些编译过程只有三个步骤的语言的编译器，JavaScript引擎要复杂得多。例如，在语法分析
 和代码生成阶段有特定的步骤来对运行性能进行优化，包括对冗余元素进行优化等。
 
-So, I'm painting only with broad strokes here. But I think you'll see shortly why *these* details we *do* cover, even at a high level, are relevant.因此在这里只进行宏观、简单的介绍，接下来你就会发现我们介绍的这些看起来有点高深的内容
+So, I'm painting only with broad strokes here. But I think you'll see shortly why *these* details we *do* cover, even at a high level, are relevant.
+
+因此在这里只进行宏观、简单的介绍，接下来你就会发现我们介绍的这些看起来有点高深的内容
 与所要讨论的事情有什么关联。
 
-For one thing, JavaScript engines don't get the luxury (like other language compilers) of having plenty of time to optimize, because JavaScript compilation doesn't happen in a build step ahead of time, as with other languages.首先，JavaScript引擎不会有大量的（像其他语言编译器那么多的）时间用来进行优化，因为与其他
-语言不同，JavaScript的编译过程不是发生在构建之前的。
+For one thing, JavaScript engines don't get the luxury (like other language compilers) of having plenty of time to optimize, because JavaScript compilation doesn't happen in a build step ahead of time, as with other languages.
+
+首先，JavaScript引擎不会有大量的（像其他语言编译器那么多的）时间用来进行优化，因为与其他语言不同，JavaScript的编译过程不是发生在构建之前的。
 
 For JavaScript, the compilation that occurs happens, in many cases, mere microseconds (or less!) before the code is executed. To ensure the fastest performance, JS engines use all kinds of tricks (like JITs, which lazy compile and even hot re-compile, etc.) which are well beyond the "scope" of our discussion here.
-对于JavaScript来说，大部分情况下编译发生在代码执行前的几微秒（甚至更短！）的时间内。在我
-们所要讨论的作用域背后，JavaScript引擎用尽了各种办法（比如JIT，可以延迟编译甚至实施重编
-译）来保证性能最佳。
+
+对于JavaScript来说，大部分情况下编译发生在代码执行前的几微秒（甚至更短！）的时间内。在我们所要讨论的作用域背后，JavaScript引擎用尽了各种办法（比如JIT，可以延迟编译甚至实施重编译）来保证性能最佳。
 
 Let's just say, for simplicity's sake, that any snippet of JavaScript has to be compiled before (usually *right* before!) it's executed. So, the JS compiler will take the program `var a = 2;` and compile it *first*, and then be ready to execute it, usually right away.
-简单地说，任何JavaScript代码片段在执行前都要进行编译（通常就在执行前）。因此，JavaScript编
-译器首先会对var a = 2;这段程序进行编译，然后做好执行它的准备，并且通常马上就会执行它。
+
+简单地说，任何JavaScript代码片段在执行前都要进行编译（通常就在执行前）。因此，JavaScript编译器首先会对var a = 2;这段程序进行编译，然后做好执行它的准备，并且通常马上就会执行它。
 
 ## Understanding Scope理解作用域
 
-The way we will approach learning about scope is to think of the process in terms of a conversation. But, *who* is having the conversation?我们学习作用域的方式是将这个过程模拟成几个人物之间的对话。那么，由谁进行这场对话呢？
+The way we will approach learning about scope is to think of the process in terms of a conversation. But, *who* is having the conversation?
+
+我们学习作用域的方式是将这个过程模拟成几个人物之间的对话。那么，由谁进行这场对话呢？
 
 ### The Cast演员表
 
-Let's meet the cast of characters that interact to process the program `var a = 2;`, so we understand their conversations that we'll listen in on shortly:首先介绍将要参与到对程序var a = 2;进行处理的过程中的演员们，这样才能理解接下来将要听
-到的对话。
+Let's meet the cast of characters that interact to process the program `var a = 2;`, so we understand their conversations that we'll listen in on shortly:
 
-1. *Engine*: responsible for start-to-finish compilation and execution of our JavaScript program.引擎 从头到尾负责整个JavaScript程序的编译及执行过程。
+首先介绍将要参与到对程序var a = 2;进行处理的过程中的演员们，这样才能理解接下来将要听到的对话。
 
-2. *Compiler*: one of *Engine*'s friends; handles all the dirty work of parsing and code-generation (see previous section).编译器
-引擎的好朋友之一，负责语法分析及代码生成等脏活累活（详见前一节的内容）。
+1. *Engine*: responsible for start-to-finish compilation and execution of our JavaScript program.
 
-3. *Scope*: another friend of *Engine*; collects and maintains a look-up list of all the declared identifiers (variables), and enforces a strict set of rules as to how these are accessible to currently executing code.作用域 引擎的另一位好朋友，负责收集并维护由所有声明的标识符（变量）组成的一系列查询，并实施
-一套非常严格的规则，确定当前执行的代码对这些标识符的访问权限。
+引擎：从头到尾负责整个JavaScript程序的编译及执行过程。
+
+2. *Compiler*: one of *Engine*'s friends; handles all the dirty work of parsing and code-generation (see previous section).
+
+编译器：引擎的好朋友之一，负责语法分析及代码生成等脏活累活（详见前一节的内容）。
+
+3. *Scope*: another friend of *Engine*; collects and maintains a look-up list of all the declared identifiers (variables), and enforces a strict set of rules as to how these are accessible to currently executing code.
+
+作用域：引擎的另一位好朋友，负责收集并维护由所有声明的标识符（变量）组成的一系列查询，并实施一套非常严格的规则，确定当前执行的代码对这些标识符的访问权限。
 
 For you to *fully understand* how JavaScript works, you need to begin to *think* like *Engine* (and friends) think, ask the questions they ask, and answer those questions the same.
-为了能够完全理解JavaScript的工作原理，你需要开始像引擎（和它的朋友们）一样思考，从它们的
-角度提出问题，并从它们的角度回答这些问题。
+
+为了能够完全理解JavaScript的工作原理，你需要开始像引擎（和它的朋友们）一样思考，从它们的角度提出问题，并从它们的角度回答这些问题。
 
 ### Back & Forth 对话
 
