@@ -1,11 +1,15 @@
-# You Don't Know JS: *this* & Object Prototypes
-# Chapter 2: `this` All Makes Sense Now!
+# You Don't Know JS: *this* & Object Prototypes 
+# Chapter 2: `this` All Makes Sense Now! this全面解析
 
 In Chapter 1, we discarded various misconceptions about `this` and learned instead that `this` is a binding made for each function invocation, based entirely on its **call-site** (how the function is called).
 
-## Call-site
+在第1章中，我们排除了一些对于this的错误理解并且明白了每个函数的this是在调用时被绑定的，完全取决于函数的调用位置（也就是函数的调用方法）。
+
+## Call-site 调用位置
 
 To understand `this` binding, we have to understand the call-site: the location in code where a function is called (**not where it's declared**). We must inspect the call-site to answer the question: what's *this* `this` a reference to?
+
+在理解this的绑定过程之前，首先要理解调用位置：调用位置就是函数在代码中被调用的位置（而不是声明的位置）。只有仔细分析调用位置才能回答这个问题：这个this到底引用的是什么？
 
 Finding the call-site is generally: "go locate where a function is called from", but it's not always that easy, as certain coding patterns can obscure the *true* call-site.
 
