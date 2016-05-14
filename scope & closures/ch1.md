@@ -7,15 +7,19 @@ One of the most fundamental paradigms of nearly all programming languages is the
 几乎所有编程语言最基本的功能之一，就是能够储存变量当中的值，并且能在之后对这个值进行访问或修改。事实上，正是这种储存和访问变量的值的能力将状态带给了程序。
 
 Without such a concept, a program could perform some tasks, but they would be extremely limited and not terribly interesting.
+
 若没有了状态这个概念，程序虽然也能够执行一些简单的任务，但它会受到高度限制，做不到非常有趣。
 
 But the inclusion of variables into our program begets the most interesting questions we will now address: where do those variables *live*? In other words, where are they stored? And, most importantly, how does our program find them when it needs them?
+
 但是将变量引入程序会引起几个很有意思的问题，也正是我们将要讨论的：这些变量住在哪里？换句话说，它们储存在哪里？最重要的是，程序需要时如何找到它们？
 
 These questions speak to the need for a well-defined set of rules for storing variables in some location, and for finding those variables at a later time. We'll call that set of rules: *Scope*.
+
 这些问题说明需要一套设计良好的规则来存储变量，并且之后可以方便地找到这些变量。这套规则被称为作用域。
 
 But, where and how do these *Scope* rules get set?
+
 但是，究竟在哪里而且怎样设置这些作用域的规则呢？
 
 ## Compiler Theory 编译原理
