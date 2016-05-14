@@ -188,14 +188,24 @@ foo( 2 );
 ```
 
 The last line that invokes `foo(..)` as a function call requires an RHS reference to `foo`, meaning, "go look-up the value of `foo`, and give it to me." Moreover, `(..)` means the value of `foo` should be executed, so it'd better actually be a function!
+最后一行foo(..)函数的调用需要对foo进行RHS引用，意味着“去找到foo的值，并把它给我”。并
+且(..)意味着foo的值需要被执行，因此它最好真的是一个函数类型的值！
+
 
 There's a subtle but important assignment here. **Did you spot it?**
+这里还有一个容易被忽略却非常重要的细节。
 
 You may have missed the implied `a = 2` in this code snippet. It happens when the value `2` is passed as an argument to the `foo(..)` function, in which case the `2` value is **assigned** to the parameter `a`. To (implicitly) assign to parameter `a`, an LHS look-up is performed.
+代码中隐式的a = 2操作可能很容易被你忽略掉。这个操作发生在2被当作参数传递给foo(..)函数
+时，2会被分配给参数a。为了给参数a（隐式地）分配值，需要进行一次LHS查询。
 
 There's also an RHS reference for the value of `a`, and that resulting value is passed to `console.log(..)`. `console.log(..)` needs a reference to execute. It's an RHS look-up for the `console` object, then a property-resolution occurs to see if it has a method called `log`.
 
+这里还有对a进行的RHS引用，并且将得到的值传给了console.log(..)。console.log(..)本身也需要一个引用才能执行，因此会对console对象进行RHS查询，并且检查得到的值中是否有一个叫作log的方法。
+
 Finally, we can conceptualize that there's an LHS/RHS exchange of passing the value `2` (by way of variable `a`'s RHS look-up) into `log(..)`. Inside of the native implementation of `log(..)`, we can assume it has parameters, the first of which (perhaps called `arg1`) has an LHS reference look-up, before assigning `2` to it.
+
+最后，在概念上可以理解为在LHS和RHS之间通过对值2进行交互来将其传递进log(..)（通过变量a的RHS查询）。假设在log(..)函数的原生实现中它可以接受参数，在将2赋值给其中第一个（也许叫作arg1）参数之前，这个参数需要进行LHS引用查询。
 
 **Note:** You might be tempted to conceptualize the function declaration `function foo(a) {...` as a normal variable declaration and assignment, such as `var foo` and `foo = function(a){...`. In so doing, it would be tempting to think of this function declaration as involving an LHS look-up.
 
