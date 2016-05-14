@@ -111,49 +111,71 @@ A reasonable assumption would be that *Compiler* will produce code that could be
 如果是，编译器会忽略该声明，继续进行编译；否则它会要求作用域在当前作用域的集合中声明一
 个新的变量，并命名为a。
 
-2. *Compiler* then produces code for *Engine* to later execute, to handle the `a = 2` assignment. The code *Engine* runs will first ask *Scope* if there is a variable called `a` accessible in the current scope collection. If so, *Engine* uses that variable. If not, *Engine* looks *elsewhere* (see nested *Scope* section below).
+2. *Compiler* then produces code for *Engine* to later execute, to handle the `a = 2` assignment. The code *Engine* runs will first ask *Scope* if there is a variable called `a` accessible in the current scope collection. If so, *Engine* uses that variable. If not, *Engine* looks *elsewhere* (see nested *Scope* section below).接下来编译器会为引擎生成运行时所需的代码，这些代码被用来处理a = 2这个赋值操作。引擎运行时会首先询问作用域，在当前的作用域集合中是否存在一个叫作a的变量。如果否，引擎就会使用这个变量；如果不是，引擎会继续查找该变量（查看1.3节）。
 
 If *Engine* eventually finds a variable, it assigns the value `2` to it. If not, *Engine* will raise its hand and yell out an error!
+如果引擎最终找到了a变量，就会将2赋值给它。否则引擎就会举手示意并抛出一个异常！
 
 To summarize: two distinct actions are taken for a variable assignment: First, *Compiler* declares a variable (if not previously declared in the current scope), and second, when executing, *Engine* looks up the variable in *Scope* and assigns to it, if found.
+总结：变量的赋值操作会执行两个动作，首先编译器会在当前作用域中声明一个变量（如果之前没
+有声明过），然后在运行时引擎会在作用域中查找该变量，如果能够找到就会对它赋值。
 
-### Compiler Speak
+### Compiler Speak编译器有话说
 
-We need a little bit more compiler terminology to proceed further with understanding.
+We need a little bit more compiler terminology to proceed further with understanding.为了进一步理解，我们需要多介绍一点编译器的术语。
 
-When *Engine* executes the code that *Compiler* produced for step (2), it has to look-up the variable `a` to see if it has been declared, and this look-up is consulting *Scope*. But the type of look-up *Engine* performs affects the outcome of the look-up.
+When *Engine* executes the code that *Compiler* produced for step (2), it has to look-up the variable `a` to see if it has been declared, and this look-up is consulting *Scope*. But the type of look-up *Engine* performs affects the outcome of the look-up.编译器在编译过程的第二步中生成了代码，引擎执行它时，会通过查找变量a来判断它是否已声明
+过。查找的过程由作用域进行协助，但是引擎执行怎样的查找，会影响最终的查找结果。
 
-In our case, it is said that *Engine* would be performing an "LHS" look-up for the variable `a`. The other type of look-up is called "RHS".
+In our case, it is said that *Engine* would be performing an "LHS" look-up for the variable `a`. The other type of look-up is called "RHS".在我们的例子中，引擎会为变量a进行LHS查询。另外一个查找的类型叫作RHS。
 
-I bet you can guess what the "L" and "R" mean. These terms stand for "Left-hand Side" and "Right-hand Side".
+I bet you can guess what the "L" and "R" mean. These terms stand for "Left-hand Side" and "Right-hand Side".我打赌你一定能猜到“L”和“R”的含义，它们分别代表左侧和右侧。
 
-Side... of what? **Of an assignment operation.**
+Side... of what? **Of an assignment operation.**什么东西的左侧和右侧？是一个赋值操作的左侧和右侧。
 
 In other words, an LHS look-up is done when a variable appears on the left-hand side of an assignment operation, and an RHS look-up is done when a variable appears on the right-hand side of an assignment operation.
+换句话说，当变量出现在赋值操作的左侧时进行LHS查询，出现在右侧时进行RHS查询。
+
 
 Actually, let's be a little more precise. An RHS look-up is indistinguishable, for our purposes, from simply a look-up of the value of some variable, whereas the LHS look-up is trying to find the variable container itself, so that it can assign. In this way, RHS doesn't *really* mean "right-hand side of an assignment" per se, it just, more accurately, means "not left-hand side".
+讲得更准确一点，RHS查询与简单地查找某个变量的值别无二致，而LHS查询则是试图找到变量
+的容器本身，从而可以对其赋值。从这个角度说，RHS并不是真正意义上的“赋值操作的右侧”，更准
+确地说是“非左侧”。
 
-Being slightly glib for a moment, you could also think "RHS" instead means "retrieve his/her source (value)", implying that RHS means "go get the value of...".
+Being slightly glib for a moment, you could also think "RHS" instead means "retrieve his/her source (value)", implying that RHS means "go get the value of...".你可以将RHS理解成retrieve his source value（取到它的源值），这意味着“得到某某的值”。
+
+
 
 Let's dig into that deeper.
 
 When I say:
+让我们继续深入研究。
+考虑以下代码：
 
 ```js
 console.log( a );
 ```
 
 The reference to `a` is an RHS reference, because nothing is being assigned to `a` here. Instead, we're looking-up to retrieve the value of `a`, so that the value can be passed to `console.log(..)`.
+其中对a的引用是一个RHS引用，因为这里a并没有赋予任何值。相应地，需要查找并取得a的值，这
+样才能将值传递给console.log(..)。
+
 
 By contrast:
+相比之下，例如：
 
 ```js
 a = 2;
 ```
 
 The reference to `a` here is an LHS reference, because we don't actually care what the current value is, we simply want to find the variable as a target for the `= 2` assignment operation.
+这里对a的引用则是LHS引用，因为实际上我们并不关心当前的值是什么，只是想要为= 2这个赋
+值操作找到一个目标。
 
 **Note:** LHS and RHS meaning "left/right-hand side of an assignment" doesn't necessarily literally mean "left/right side of the `=` assignment operator". There are several other ways that assignments happen, and so it's better to conceptually think about it as: "who's the target of the assignment (LHS)" and "who's the source of the assignment (RHS)".
+LHS和RHS的含义是“赋值操作的左侧或右侧”并不一定意味着就是“=赋值操作符的左侧
+或右侧”。赋值操作还有其他几种形式，因此在概念上最好将其理解为“赋值操作的目标是谁
+（LHS）”以及“谁是赋值操作的源头（RHS）”。
 
 Consider this program, which has both LHS and RHS references:
 
