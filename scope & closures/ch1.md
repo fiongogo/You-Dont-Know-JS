@@ -3,8 +3,8 @@
 第 1 章 作用域是什么
 
 One of the most fundamental paradigms of nearly all programming languages is the ability to store values in variables, and later retrieve or modify those values. In fact, the ability to store values and pull values out of variables is what gives a program *state*.
-几乎所有编程语言最基本的功能之一，就是能够储存变量当中的值，并且能在之后对这个值进行
-访问或修改。事实上，正是这种储存和访问变量的值的能力将状态带给了程序。
+
+几乎所有编程语言最基本的功能之一，就是能够储存变量当中的值，并且能在之后对这个值进行访问或修改。事实上，正是这种储存和访问变量的值的能力将状态带给了程序。
 
 Without such a concept, a program could perform some tasks, but they would be extremely limited and not terribly interesting.
 若没有了状态这个概念，程序虽然也能够执行一些简单的任务，但它会受到高度限制，做不到非常
